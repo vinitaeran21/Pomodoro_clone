@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:practice123455/pomodoro_provider.dart';
-import 'package:practice123455/screens/timers.dart';
+import 'package:practice123455/screens/all_timers.dart';
 import 'package:practice123455/screens/timings.dart';
 import 'package:provider/provider.dart';
 
