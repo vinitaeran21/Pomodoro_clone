@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 
-class FocusTimer extends StatelessWidget {
+class FocusTimer extends StatefulWidget {
   final String pageTitle;
   final Color ringColor;
   final int timerLength;
@@ -15,6 +15,12 @@ class FocusTimer extends StatelessWidget {
       required this.controller});
 
   @override
+  State<FocusTimer> createState() => _FocusTimerState();
+}
+
+class _FocusTimerState extends State<FocusTimer>
+    with AutomaticKeepAliveClientMixin {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
@@ -22,12 +28,18 @@ class FocusTimer extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
         title: Text(
-          '$pageTitle',
+          '${widget.pageTitle}',
           style: TextStyle(color: Colors.white),
         ),
         actions: [
           IconButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                widget.controller.isStarted
+                    ? widget.controller.isPaused
+                        ? Navigator.of(context).pop()
+                        : null
+                    : Navigator.of(context).pop();
+              },
               icon: Icon(Icons.cancel))
         ],
       ),
@@ -45,12 +57,12 @@ class FocusTimer extends StatelessWidget {
             textFormat: CountdownTextFormat.MM_SS,
             isTimerTextShown: true,
             strokeWidth: 6,
-            controller: controller,
+            controller: widget.controller,
             autoStart: false,
             initialDuration: 0,
-            duration: timerLength * 60,
+            duration: widget.timerLength * 60,
             fillColor: Colors.black,
-            ringColor: ringColor,
+            ringColor: widget.ringColor,
             width: MediaQuery.of(context).size.width * 0.7,
             height: MediaQuery.of(context).size.width * 0.8,
           ),
@@ -73,4 +85,8 @@ class FocusTimer extends StatelessWidget {
       ]),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }

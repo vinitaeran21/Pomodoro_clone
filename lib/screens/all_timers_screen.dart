@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:practice123455/modelss/pomodoromodel.dart';
 import 'package:practice123455/pomodoro_provider.dart';
+import 'package:practice123455/widgets/all_timers_grid.dart';
 import 'package:practice123455/widgets/timercard.dart';
 import 'package:provider/provider.dart';
+
+import 'add_new_timer_screen.dart';
 
 class TimerScreen extends StatelessWidget {
   const TimerScreen({Key? key}) : super(key: key);
@@ -10,31 +14,27 @@ class TimerScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timerData = Provider.of<PomodoroProvider>(context);
-    final timerList = timerData.timers;
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Timers'),
           actions: [
             IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                      isDismissible: false,
+                      isScrollControlled: true,
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.vertical(top: Radius.circular(16))),
+                      context: context,
+                      builder: (context) => AddPomodoroSheet());
+                },
                 icon: Icon(
                   Icons.add,
                 ))
           ],
         ),
-        body: GridView.builder(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              childAspectRatio: 1.6,
-            ),
-            itemCount: PomodoroProvider().timers.length,
-            itemBuilder: (ctx, i) {
-              return TimerCard(
-                data: timerList[i],
-              );
-            }));
+        body: TimersGrid());
   }
 }

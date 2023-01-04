@@ -2,7 +2,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:practice123455/pomodoro_provider.dart';
-import 'package:practice123455/screens/countdown_page.dart';
+import 'package:practice123455/screens/countdown_screen.dart';
 import 'package:provider/provider.dart';
 
 class Timings extends StatefulWidget {

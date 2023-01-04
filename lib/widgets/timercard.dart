@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:practice123455/screens/timings.dart';
+import 'package:practice123455/screens/timings_screen.dart';
 import 'package:provider/provider.dart';
-
 import '../modelss/pomodoromodel.dart';
 
 class TimerCard extends StatelessWidget {
