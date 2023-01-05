@@ -46,7 +46,7 @@ class _TimingsState extends State<Timings> {
 
   @override
   Widget build(BuildContext context) {
-    final timerId = ModalRoute.of(context)!.settings.arguments as DateTime;
+    final timerId = ModalRoute.of(context)!.settings.arguments as String;
     final timerData = Provider.of<PomodoroProvider>(context).findById(timerId);
 
     return SafeArea(

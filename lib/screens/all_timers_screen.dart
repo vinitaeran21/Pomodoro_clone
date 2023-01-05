@@ -21,14 +21,7 @@ class TimerScreen extends StatelessWidget {
           actions: [
             IconButton(
                 onPressed: () {
-                  showModalBottomSheet(
-                      isDismissible: false,
-                      isScrollControlled: true,
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.vertical(top: Radius.circular(16))),
-                      context: context,
-                      builder: (context) => AddPomodoroSheet());
+                  timerData.addPomodoro();
                 },
                 icon: Icon(
                   Icons.add,

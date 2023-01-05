@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_gauges/gauges.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 
 class FocusTimer extends StatefulWidget {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class Pomodoro {
-  DateTime id;
+  String id;
   int focus;
   int shortbreak;
   int longbreak;
-  int roundsForLongBreak;
+  int laps;
   String title;
   String icon;
 
@@ -14,7 +14,7 @@ class Pomodoro {
       required this.focus,
       required this.shortbreak,
       required this.longbreak,
-      required this.roundsForLongBreak,
+      required this.laps,
       required this.title,
       required this.icon});
 }

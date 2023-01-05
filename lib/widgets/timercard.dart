@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:practice123455/screens/timings_screen.dart';
 import 'package:provider/provider.dart';
 import '../modelss/pomodoromodel.dart';
+import '../screens/add_new_timer_screen.dart';
 
 class TimerCard extends StatelessWidget {
   Pomodoro data;
@@ -30,9 +31,22 @@ class TimerCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(children: [
-              IconButton(onPressed: () {}, icon: Icon(Icons.abc)),
+              Text(data.icon),
               Spacer(),
-              IconButton(onPressed: () {}, icon: Icon(Icons.dehaze_outlined))
+              IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                        isDismissible: false,
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(16))),
+                        context: context,
+                        builder: (context) => AddPomodoroSheet(
+                              editingPomodoro: data,
+                            ));
+                  },
+                  icon: Icon(Icons.more_horiz))
             ]),
             Spacer(),
             Text(
