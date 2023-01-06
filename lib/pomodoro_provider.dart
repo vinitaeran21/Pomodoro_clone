@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:practice123455/modelss/pomodoromodel.dart';
@@ -5,23 +7,38 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class PomodoroProvider with ChangeNotifier {
-  List<Pomodoro> _timerList = [
-    Pomodoro(
-        id: Uuid().v4(),
-        focus: 25,
-        shortbreak: 5,
-        longbreak: 15,
-        laps: 4,
-        title: 'Pomodoro',
-        icon: '🍅')
-  ];
+  late List<Pomodoro> _timerList;
 
-  List<Pomodoro> get timers {
-    // var prefs = await SharedPreferences.getInstance();
-    // for (int i = 1;; i++) {
-    //   if (prefs.containsKey('Pomo$i')) {
-    //     List<String> pomoData = prefs.getStringList('Pomo$i')!;
-    //     _timerList[i - 1] = Pomodoro(
+  PomodoroProvider() {
+    _timerList = [
+      Pomodoro(
+          id: Uuid().v4(),
+          focus: 25,
+          shortbreak: 5,
+          longbreak: 15,
+          laps: 4,
+          title: 'Pomodoro',
+          icon: '🍅')
+    ];
+    loadTimers();
+  }
+
+  List<Pomodoro> get timers => [..._timerList];
+
+  // _initPrefs() async {
+  //   _prefs ??= await SharedPreferences.getInstance();
+  // }
+
+  loadTimers() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    var result = _prefs.getStringList('Pomodoros');
+    if (result != null) {
+      _timerList = result.map((f) => Pomodoro.fromMap(json.decode(f))).toList();
+    }
+    // for (int i = 0;; i++) {
+    //   if (_prefs.containsKey('Pomo$i')) {
+    //     List<String> pomoData = _prefs.getStringList('Pomo$i')!;
+    //     _timerList[i] = Pomodoro(
     //         id: pomoData[0],
     //         focus: int.parse(pomoData[1]),
     //         shortbreak: int.parse(pomoData[2]),
@@ -32,7 +49,7 @@ class PomodoroProvider with ChangeNotifier {
     //   } else
     //     break;
     // }
-    return [..._timerList];
+    notifyListeners();
   }
 
   Pomodoro findById(String id) {
@@ -58,25 +75,24 @@ class PomodoroProvider with ChangeNotifier {
         title: 'Pomodoro',
         icon: '🍅'));
     notifyListeners();
+    _saveTimers();
   }
 
   void EditingPomodoro(Pomodoro updatedPomodoro) async {
-    // var prefs = await SharedPreferences.getInstance();
-
     int i =
         _timerList.indexWhere((element) => element.id == updatedPomodoro.id);
     _timerList.removeAt(i);
     _timerList.insert(i, updatedPomodoro);
-
-    // prefs.setStringList('Pomo${i + 1}', [
-    //   updatedPomodoro.id,
-    //   '${updatedPomodoro.focus}',
-    //   '${updatedPomodoro.shortbreak}',
-    //   '${updatedPomodoro.longbreak}',
-    //   '${updatedPomodoro.laps}',
-    //   updatedPomodoro.title,
-    //   updatedPomodoro.icon
-    // ]);
     notifyListeners();
+    _saveTimers();
+  }
+
+  _saveTimers() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+    List<String> myPomodoros =
+        _timerList.map((p) => json.encode(p.toMap())).toList();
+
+    _prefs.setStringList('Pomodoros', myPomodoros);
   }
 }
