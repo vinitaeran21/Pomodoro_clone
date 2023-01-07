@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 
-class FocusTimer extends StatefulWidget {
+class FocusTimer extends StatelessWidget {
   final String pageTitle;
   final Color ringColor;
   final int timerLength;
   final CountDownController controller;
+  final Function lapUpdate;
+  final String timerTitle;
 
   FocusTimer(
       {required this.pageTitle,
       required this.ringColor,
       required this.timerLength,
-      required this.controller});
+      required this.controller,
+      required this.lapUpdate,
+      required this.timerTitle});
 
-  @override
-  State<FocusTimer> createState() => _FocusTimerState();
-}
-
-class _FocusTimerState extends State<FocusTimer>
-    with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,14 +25,14 @@ class _FocusTimerState extends State<FocusTimer>
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
         title: Text(
-          '${widget.pageTitle}',
+          '$pageTitle',
           style: TextStyle(color: Colors.white),
         ),
         actions: [
           IconButton(
               onPressed: () {
-                widget.controller.isStarted
-                    ? widget.controller.isPaused
+                controller.isStarted
+                    ? controller.isPaused
                         ? Navigator.of(context).pop()
                         : null
                     : Navigator.of(context).pop();
@@ -46,6 +44,10 @@ class _FocusTimerState extends State<FocusTimer>
         Align(
           alignment: Alignment(0, -0.3),
           child: CircularCountDownTimer(
+            onComplete: () {
+              print('im here 3');
+              if (!controller.isRestarted) lapUpdate();
+            },
             textStyle: const TextStyle(
               fontSize: 64,
               letterSpacing: 3,
@@ -56,12 +58,12 @@ class _FocusTimerState extends State<FocusTimer>
             textFormat: CountdownTextFormat.MM_SS,
             isTimerTextShown: true,
             strokeWidth: 6,
-            controller: widget.controller,
+            controller: controller,
             autoStart: false,
             initialDuration: 0,
-            duration: widget.timerLength * 60,
+            duration: timerLength * 60,
             fillColor: Colors.black,
-            ringColor: widget.ringColor,
+            ringColor: ringColor,
             width: MediaQuery.of(context).size.width * 0.7,
             height: MediaQuery.of(context).size.width * 0.8,
           ),
@@ -76,7 +78,7 @@ class _FocusTimerState extends State<FocusTimer>
               width: MediaQuery.of(context).size.width * 0.3,
               child: Center(
                 child: Text(
-                  'Pomodoro',
+                  timerTitle,
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),

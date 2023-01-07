@@ -21,6 +21,7 @@ class _TimingsState extends State<Timings> {
   final CountDownController controller2 = CountDownController();
   final CountDownController controller3 = CountDownController();
   late CountDownController currentController;
+  int lapsCompleted = 0;
 
   void SwitchCountDownMode(CountDownController controller) {
     if (!controller.isStarted) {
@@ -71,109 +72,155 @@ class _TimingsState extends State<Timings> {
                   pageTitle: 'Focus',
                   timerLength: timerData.focus,
                   controller: controller1,
-                ),
-                FocusTimer(
-                    ringColor: Colors.green,
-                    pageTitle: 'Short Break',
-                    timerLength: timerData.shortbreak,
-                    controller: controller2),
-                FocusTimer(
-                    ringColor: Colors.blue,
-                    pageTitle: 'Long Break',
-                    timerLength: timerData.longbreak,
-                    controller: controller3)
-              ]),
-          bottomNavigationBar: GestureDetector(
-            onTap: () {},
-            child: Row(
-              children: [
-                SizedBox(
-                  width: 12,
-                ),
-                TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.dehaze_outlined,
-                      color: Colors.black,
-                    ),
-                    label: Text(
-                      'Mute',
-                      style: TextStyle(color: Colors.black),
-                    )),
-                Spacer(),
-                IconButton(
-                  splashRadius: 1,
-                  onPressed: () {
-                    if (timerPaused) {
-                      // if (currentPage == 0) {
-                      //   controller1.reset();
-                      // } else if (currentPage == 1) {
-                      //   controller2.reset();
-                      // } else if (currentPage == 2) {
-                      //   controller3.reset();
-                      // }
-                      currentController.reset();
-                    } else {
-                      setState(() {
-                        timerPaused = true;
-                      });
-                      currentController.pause();
-                      showDialog(
-                          context: context,
-                          builder: (ctx) {
-                            return AlertDialog(
-                              title: Text(
-                                  'Are your sure you want to reset current session'),
-                              actions: [
-                                TextButton(
-                                    onPressed: () {
-                                      currentController.resume();
-                                      Navigator.of(context).pop();
-                                      setState(() {
-                                        timerPaused = false;
-                                      });
-                                    },
-                                    child: Text('Cancel')),
-                                TextButton(
-                                    onPressed: () {
-                                      currentController.reset();
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: Text('Sure'))
-                              ],
-                            );
-                          });
+                  lapUpdate: () {
+                    print('im here 4');
+
+                    setState(() {
+                      lapsCompleted += 1;
+                      timerPaused = !timerPaused;
+                    });
+                    if (lapsCompleted == timerData.laps)
+                      controller.animateToPage(2,
+                          duration: Duration(seconds: 1),
+                          curve: Curves.easeInOut);
+                    else {
+                      controller.animateToPage(1,
+                          duration: Duration(seconds: 1),
+                          curve: Curves.easeInOut);
                     }
                   },
-                  icon: Icon(
-                    Icons.stop_rounded,
-                    size: 32,
-                  ),
+                  timerTitle: '${timerData.title} ${timerData.icon}',
                 ),
-                IconButton(
-                  splashRadius: 1,
-                  onPressed: () {
-                    print(controller1.isStarted);
-                    // if (currentPage == 0) {
-                    //   SwitchCountDownMode(controller1);
-                    // } else if (currentPage == 1) {
-                    //   SwitchCountDownMode(controller2);
-                    // } else if (currentPage == 2) {
-                    //   SwitchCountDownMode(controller3);
-                    // }
-                    SwitchCountDownMode(currentController);
+                FocusTimer(
+                  ringColor: Colors.green,
+                  pageTitle: 'Short Break',
+                  timerLength: timerData.shortbreak,
+                  controller: controller2,
+                  lapUpdate: () {
                     setState(() {
                       timerPaused = !timerPaused;
                     });
-                    print(controller1.isStarted);
+                    controller.animateToPage(0,
+                        duration: Duration(seconds: 1),
+                        curve: Curves.easeInOut);
                   },
-                  icon: timerPaused
-                      ? Icon(Icons.play_arrow_rounded, size: 32)
-                      : Icon(Icons.pause, size: 32),
+                  timerTitle: '${timerData.title} ${timerData.icon}',
+                ),
+                FocusTimer(
+                  ringColor: Colors.blue,
+                  pageTitle: 'Long Break',
+                  timerLength: timerData.longbreak,
+                  controller: controller3,
+                  lapUpdate: () {
+                    setState(() {
+                      timerPaused = !timerPaused;
+                      lapsCompleted = 0;
+                    });
+                    controller.animateToPage(0,
+                        duration: Duration(seconds: 1),
+                        curve: Curves.easeInOut);
+                  },
+                  timerTitle: '${timerData.title} ${timerData.icon}',
                 )
-              ],
-            ),
-          )),
+              ]),
+          bottomNavigationBar: GestureDetector(
+              onTap: () {},
+              child: Container(
+                height: 88,
+                child: ListView(
+                  children: [
+                    Container(
+                        height: 40,
+                        color: Colors.black,
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: myWidget(lapsCompleted))),
+                    Container(
+                      color: Colors.white,
+                      height: 48,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 12,
+                          ),
+                          TextButton.icon(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.dehaze_outlined,
+                                color: Colors.black,
+                              ),
+                              label: Text(
+                                'Mute',
+                                style: TextStyle(color: Colors.black),
+                              )),
+                          Spacer(),
+                          IconButton(
+                            splashRadius: 1,
+                            onPressed: () {
+                              if (timerPaused) {
+                                currentController.restart();
+                                currentController.pause();
+                              } else {
+                                setState(() {
+                                  timerPaused = true;
+                                });
+                                currentController.pause();
+                                showDialog(
+                                    context: context,
+                                    builder: (ctx) {
+                                      return AlertDialog(
+                                        title: Text(
+                                            'Are your sure you want to reset current session'),
+                                        actions: [
+                                          TextButton(
+                                              onPressed: () {
+                                                currentController.resume();
+                                                Navigator.of(context).pop();
+                                                setState(() {
+                                                  timerPaused = false;
+                                                });
+                                              },
+                                              child: Text('Cancel')),
+                                          TextButton(
+                                              onPressed: () {
+                                                currentController.restart();
+                                                currentController.pause();
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: Text('Sure'))
+                                        ],
+                                      );
+                                    });
+                              }
+                            },
+                            icon: Icon(
+                              Icons.stop_rounded,
+                              size: 32,
+                            ),
+                          ),
+                          IconButton(
+                            splashRadius: 1,
+                            onPressed: () {
+                              print(controller1.isStarted);
+                              SwitchCountDownMode(currentController);
+                              setState(() {
+                                timerPaused = !timerPaused;
+                              });
+                            },
+                            icon: timerPaused
+                                ? Icon(Icons.play_arrow_rounded, size: 32)
+                                : Icon(Icons.pause, size: 32),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ))),
     );
+  }
+
+  List<Text> myWidget(int count) {
+    return List.generate(count, (i) => Text("🍅")).toList();
   }
 }
