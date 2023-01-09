@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:practice123455/pomodoro_provider.dart';
+import 'package:practice123455/providers/pomodoro_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../modelss/pomodoromodel.dart';

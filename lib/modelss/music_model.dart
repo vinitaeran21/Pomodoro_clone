@@ -1,5 +1,5 @@
 class Music {
   String musicTitle;
-
-  Music({required this.musicTitle});
+  String url;
+  Music({required this.musicTitle, required this.url});
 }

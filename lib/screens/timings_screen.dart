@@ -1,12 +1,11 @@
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:practice123455/pomodoro_provider.dart';
+import 'package:practice123455/providers/pomodoro_provider.dart';
 import 'package:practice123455/screens/countdown_screen.dart';
 import 'package:provider/provider.dart';
 
 class Timings extends StatefulWidget {
-  Timings({Key? key}) : super(key: key);
+  const Timings({Key? key}) : super(key: key);
   static String routename = 'timings';
 
   @override
@@ -15,7 +14,8 @@ class Timings extends StatefulWidget {
 
 class _TimingsState extends State<Timings> {
   bool timerPaused = true;
-  PageController controller = PageController(initialPage: 0);
+  PageController pageController =
+      PageController(initialPage: 0, keepPage: true);
   int currentPage = 0;
   final CountDownController controller1 = CountDownController();
   final CountDownController controller2 = CountDownController();
@@ -25,17 +25,11 @@ class _TimingsState extends State<Timings> {
 
   void SwitchCountDownMode(CountDownController controller) {
     if (!controller.isStarted) {
-      setState(() {
-        controller.start();
-      });
+      controller.start();
     } else if (!controller.isPaused) {
-      setState(() {
-        controller.pause();
-      });
+      controller.pause();
     } else if (!controller.isResumed) {
-      setState(() {
-        controller.resume();
-      });
+      controller.resume();
     }
   }
 
@@ -43,6 +37,13 @@ class _TimingsState extends State<Timings> {
   void initState() {
     super.initState();
     currentController = controller1;
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    pageController.dispose();
   }
 
   @override
@@ -54,17 +55,18 @@ class _TimingsState extends State<Timings> {
       child: Scaffold(
           body: PageView(
               physics: timerPaused
-                  ? ScrollPhysics()
-                  : NeverScrollableScrollPhysics(),
-              controller: controller,
+                  ? const ScrollPhysics()
+                  : const NeverScrollableScrollPhysics(),
+              controller: pageController,
               onPageChanged: (index) {
-                print(currentPage);
                 currentPage = index;
-                if (index == 0)
+                if (index == 0) {
                   currentController = controller1;
-                else if (index == 1)
+                } else if (index == 1) {
                   currentController = controller2;
-                else if (index == 2) currentController = controller3;
+                } else if (index == 2) {
+                  currentController = controller3;
+                }
               },
               children: [
                 FocusTimer(
@@ -73,19 +75,17 @@ class _TimingsState extends State<Timings> {
                   timerLength: timerData.focus,
                   controller: controller1,
                   lapUpdate: () {
-                    print('im here 4');
-
                     setState(() {
                       lapsCompleted += 1;
                       timerPaused = !timerPaused;
                     });
-                    if (lapsCompleted == timerData.laps)
-                      controller.animateToPage(2,
-                          duration: Duration(seconds: 1),
+                    if (lapsCompleted == timerData.laps) {
+                      pageController.animateToPage(2,
+                          duration: const Duration(seconds: 1),
                           curve: Curves.easeInOut);
-                    else {
-                      controller.animateToPage(1,
-                          duration: Duration(seconds: 1),
+                    } else {
+                      pageController.animateToPage(1,
+                          duration: const Duration(seconds: 1),
                           curve: Curves.easeInOut);
                     }
                   },
@@ -100,8 +100,8 @@ class _TimingsState extends State<Timings> {
                     setState(() {
                       timerPaused = !timerPaused;
                     });
-                    controller.animateToPage(0,
-                        duration: Duration(seconds: 1),
+                    pageController.animateToPage(0,
+                        duration: const Duration(seconds: 1),
                         curve: Curves.easeInOut);
                   },
                   timerTitle: '${timerData.title} ${timerData.icon}',
@@ -116,8 +116,8 @@ class _TimingsState extends State<Timings> {
                       timerPaused = !timerPaused;
                       lapsCompleted = 0;
                     });
-                    controller.animateToPage(0,
-                        duration: Duration(seconds: 1),
+                    pageController.animateToPage(0,
+                        duration: const Duration(seconds: 1),
                         curve: Curves.easeInOut);
                   },
                   timerTitle: '${timerData.title} ${timerData.icon}',
@@ -125,35 +125,37 @@ class _TimingsState extends State<Timings> {
               ]),
           bottomNavigationBar: GestureDetector(
               onTap: () {},
-              child: Container(
+              child: SizedBox(
                 height: 88,
-                child: ListView(
+                child: Column(
                   children: [
                     Container(
-                        height: 40,
-                        color: Colors.black,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: myWidget(lapsCompleted))),
+                      height: 40,
+                      color: Colors.black,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: myWidget(lapsCompleted),
+                      ),
+                    ),
                     Container(
                       color: Colors.white,
                       height: 48,
                       child: Row(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 12,
                           ),
                           TextButton.icon(
                               onPressed: () {},
-                              icon: Icon(
+                              icon: const Icon(
                                 Icons.dehaze_outlined,
                                 color: Colors.black,
                               ),
-                              label: Text(
+                              label: const Text(
                                 'Mute',
                                 style: TextStyle(color: Colors.black),
                               )),
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
                             splashRadius: 1,
                             onPressed: () {
@@ -161,39 +163,18 @@ class _TimingsState extends State<Timings> {
                                 currentController.restart();
                                 currentController.pause();
                               } else {
+                                currentController.pause();
                                 setState(() {
                                   timerPaused = true;
                                 });
-                                currentController.pause();
                                 showDialog(
                                     context: context,
                                     builder: (ctx) {
-                                      return AlertDialog(
-                                        title: Text(
-                                            'Are your sure you want to reset current session'),
-                                        actions: [
-                                          TextButton(
-                                              onPressed: () {
-                                                currentController.resume();
-                                                Navigator.of(context).pop();
-                                                setState(() {
-                                                  timerPaused = false;
-                                                });
-                                              },
-                                              child: Text('Cancel')),
-                                          TextButton(
-                                              onPressed: () {
-                                                currentController.restart();
-                                                currentController.pause();
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text('Sure'))
-                                        ],
-                                      );
+                                      return buildAlertDialog(context);
                                     });
                               }
                             },
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.stop_rounded,
                               size: 32,
                             ),
@@ -201,15 +182,14 @@ class _TimingsState extends State<Timings> {
                           IconButton(
                             splashRadius: 1,
                             onPressed: () {
-                              print(controller1.isStarted);
                               SwitchCountDownMode(currentController);
                               setState(() {
                                 timerPaused = !timerPaused;
                               });
                             },
                             icon: timerPaused
-                                ? Icon(Icons.play_arrow_rounded, size: 32)
-                                : Icon(Icons.pause, size: 32),
+                                ? const Icon(Icons.play_arrow_rounded, size: 32)
+                                : const Icon(Icons.pause, size: 32),
                           )
                         ],
                       ),
@@ -220,7 +200,31 @@ class _TimingsState extends State<Timings> {
     );
   }
 
+  AlertDialog buildAlertDialog(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Are your sure you want to reset current session'),
+      actions: [
+        TextButton(
+            onPressed: () {
+              currentController.resume();
+              Navigator.of(context).pop();
+              setState(() {
+                timerPaused = false;
+              });
+            },
+            child: const Text('Cancel')),
+        TextButton(
+            onPressed: () {
+              currentController.restart();
+              currentController.pause();
+              Navigator.of(context).pop();
+            },
+            child: const Text('Sure'))
+      ],
+    );
+  }
+
   List<Text> myWidget(int count) {
-    return List.generate(count, (i) => Text("🍅")).toList();
+    return List.generate(count, (i) => const Text("🍅")).toList();
   }
 }

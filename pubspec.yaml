@@ -16,6 +16,8 @@ dependencies:
   circular_countdown_timer: ^0.2.3
   shared_preferences: ^2.0.15
   uuid: ^3.0.7
+  intl: ^0.18.0
+
 
 
 dev_dependencies:

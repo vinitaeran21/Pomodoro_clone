@@ -3,7 +3,7 @@ import 'package:practice123455/widgets/timercard.dart';
 import 'package:provider/provider.dart';
 
 import '../modelss/pomodoromodel.dart';
-import '../pomodoro_provider.dart';
+import '../providers/pomodoro_provider.dart';
 
 class TimersGrid extends StatelessWidget {
   const TimersGrid({

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:practice123455/modelss/pomodoromodel.dart';
@@ -20,35 +19,17 @@ class PomodoroProvider with ChangeNotifier {
           title: 'Pomodoro',
           icon: '🍅')
     ];
-    loadTimers();
+    _loadTimers();
   }
 
   List<Pomodoro> get timers => [..._timerList];
 
-  // _initPrefs() async {
-  //   _prefs ??= await SharedPreferences.getInstance();
-  // }
-
-  loadTimers() async {
+  _loadTimers() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     var result = _prefs.getStringList('Pomodoros');
     if (result != null) {
       _timerList = result.map((f) => Pomodoro.fromMap(json.decode(f))).toList();
     }
-    // for (int i = 0;; i++) {
-    //   if (_prefs.containsKey('Pomo$i')) {
-    //     List<String> pomoData = _prefs.getStringList('Pomo$i')!;
-    //     _timerList[i] = Pomodoro(
-    //         id: pomoData[0],
-    //         focus: int.parse(pomoData[1]),
-    //         shortbreak: int.parse(pomoData[2]),
-    //         longbreak: int.parse(pomoData[3]),
-    //         laps: int.parse(pomoData[4]),
-    //         title: pomoData[5],
-    //         icon: pomoData[6]);
-    //   } else
-    //     break;
-    // }
     notifyListeners();
   }
 
@@ -90,9 +71,7 @@ class PomodoroProvider with ChangeNotifier {
   _saveTimers() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
 
-    List<String> myPomodoros =
-        _timerList.map((p) => json.encode(p.toMap())).toList();
-
-    _prefs.setStringList('Pomodoros', myPomodoros);
+    _prefs.setStringList(
+        'Pomodoros', _timerList.map((p) => json.encode(p.toMap())).toList());
   }
 }

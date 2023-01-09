@@ -60,6 +60,7 @@ class TimerCard extends StatelessWidget {
               height: 4,
             ),
             Text(
+              overflow: TextOverflow.ellipsis,
               data.title,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),

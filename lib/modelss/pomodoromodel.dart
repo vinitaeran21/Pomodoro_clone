@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 class Pomodoro {
   String id;
   int focus;

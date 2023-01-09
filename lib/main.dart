@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:practice123455/pomodoro_provider.dart';
+import 'package:practice123455/providers/history_provider.dart';
+import 'package:practice123455/providers/pomodoro_provider.dart';
 import 'package:practice123455/screens/all_timers_screen.dart';
+import 'package:practice123455/screens/home.dart';
 import 'package:practice123455/screens/timings_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -14,8 +16,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider.value(
-      value: PomodoroProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: PomodoroProvider(),
+        ),
+        ChangeNotifierProvider.value(
+          value: HistoryProvider(),
+        ),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
@@ -33,7 +42,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         routes: {Timings.routename: (ctx) => Timings()},
-        home: TimerScreen(),
+        home: Home(),
       ),
     );
   }
