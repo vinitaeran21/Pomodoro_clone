@@ -86,7 +86,9 @@ class _RelaxScreenState extends State<RelaxScreen> {
                 }),
           ),
           Expanded(
-            child: MusicImagesGrid(),
+            child: MusicImagesGrid(
+              categoryName: categoriesListText[currentCategory],
+            ),
           )
         ],
       ),
