@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:practice123455/screens/History.dart';
 
 import '../widgets/stats_summary_container.dart';
 
 class Statistics extends StatelessWidget {
   const Statistics({Key? key}) : super(key: key);
+  static const routeName = 'Statistics';
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +14,11 @@ class Statistics extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Color(0xfff2f2f6),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.dehaze_outlined))
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(HistoryScreen.routeName);
+              },
+              icon: Icon(Icons.dehaze_outlined))
         ],
       ),
       body: Padding(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:practice123455/providers/history_provider.dart';
 import 'package:practice123455/providers/pomodoro_provider.dart';
+import 'package:practice123455/screens/History.dart';
 import 'package:practice123455/screens/all_timers_screen.dart';
 import 'package:practice123455/screens/home.dart';
 import 'package:practice123455/screens/timings_screen.dart';
@@ -41,7 +42,10 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: Colors.white,
           primarySwatch: Colors.blue,
         ),
-        routes: {Timings.routename: (ctx) => Timings()},
+        routes: {
+          Timings.routename: (ctx) => Timings(),
+          HistoryScreen.routeName: (ctx) => HistoryScreen()
+        },
         home: Home(),
       ),
     );

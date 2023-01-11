@@ -8,6 +8,7 @@ import '../widgets/date_card.dart';
 
 class HistoryScreen extends StatelessWidget {
   HistoryScreen({Key? key}) : super(key: key);
+  static const routeName = 'History';
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +17,12 @@ class HistoryScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leadingWidth: double.infinity,
+          leading: TextButton.icon(
+            icon: Icon(Icons.arrow_back_outlined),
+            label: Text('Statistics'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
           backgroundColor: Color(0xfff2f2f6),
           actions: [IconButton(onPressed: () {}, icon: Icon(Icons.delete))],
         ),
