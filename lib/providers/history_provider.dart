@@ -46,6 +46,38 @@ class HistoryProvider with ChangeNotifier {
     _saveHistory();
   }
 
+  Map<String, List> SummaryData() {
+    String today = DateFormat('yMMMMd').format(DateTime.now());
+    int todayTime = 0;
+    int todaySession = 0;
+    int weekSession = 0;
+    int weekTime = 0;
+    int totalTime = 0;
+    int totalSession = 0;
+
+    for (var element in _history) {
+      if (element.type == 'Focus') {
+        if (element.startDate == today) {
+          todaySession += 1;
+          todayTime += element.length.inMinutes;
+        }
+        if (element.endDateTime
+            .subtract(element.length)
+            .isAfter(DateTime.now().subtract(Duration(days: 7)))) {
+          weekSession += 1;
+          weekTime += element.length.inMinutes;
+        }
+        totalTime += element.length.inMinutes;
+        totalSession += 1;
+      }
+    }
+    return {
+      'Today': ['${todayTime ~/ 60} hour\n${todayTime % 60} min', todaySession],
+      'Week': ['${weekTime ~/ 60} hour\n${weekTime % 60} min', weekSession],
+      'Total': ['${totalTime ~/ 60} hour\n${totalTime % 60} min', totalSession]
+    };
+  }
+
   void _saveHistory() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     _prefs.setStringList(
@@ -57,10 +89,7 @@ class HistoryProvider with ChangeNotifier {
     var data = _prefs.getStringList('history');
     if (data != null) {
       _history = data.map((f) => History.fromMap(json.decode(f))).toList();
-      for (var element in _history) {
-        print(element.toMap());
-      }
-      print('im here');
+      for (var element in _history) {}
       notifyListeners();
     }
   }
