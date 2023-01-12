@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:practice123455/providers/history_provider.dart';
+import 'package:practice123455/providers/music_provider.dart';
 import 'package:practice123455/providers/pomodoro_provider.dart';
 import 'package:practice123455/screens/History.dart';
 import 'package:practice123455/screens/all_timers_screen.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: HistoryProvider(),
         ),
+        ChangeNotifierProvider.value(value: MusicProvider())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:practice123455/providers/music_provider.dart';
+import 'package:provider/provider.dart';
 
 class MusicImagesGrid extends StatelessWidget {
   String categoryName;
@@ -7,6 +9,8 @@ class MusicImagesGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Data = Provider.of<MusicProvider>(context);
+    // final musicList = Data.listOfMusic;
     return GridView.builder(
         itemCount: 6,
         padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),

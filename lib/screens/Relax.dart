@@ -92,6 +92,46 @@ class _RelaxScreenState extends State<RelaxScreen> {
           )
         ],
       ),
+      bottomNavigationBar: GestureDetector(
+        onTap: () {},
+        child: Container(
+          color: Colors.white,
+          height: 48,
+          child: Row(
+            children: [
+              const SizedBox(
+                width: 12,
+              ),
+              TextButton.icon(
+                  onPressed: () {},
+                  icon: const Icon(
+                    Icons.dehaze_outlined,
+                    color: Colors.black,
+                  ),
+                  label: const Text(
+                    'Mute',
+                    style: TextStyle(color: Colors.black),
+                  )),
+              const Spacer(),
+              IconButton(
+                splashRadius: 1,
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.stop_rounded,
+                  size: 32,
+                ),
+              ),
+              IconButton(
+                splashRadius: 1,
+                onPressed: () {},
+                icon: timerPaused
+                    ? const Icon(Icons.play_arrow_rounded, size: 32)
+                    : const Icon(Icons.pause, size: 32),
+              )
+            ],
+          ),
+        ),
+      ),
     ));
   }
 }
