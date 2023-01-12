@@ -3,7 +3,7 @@ class Music {
   String downloadUrl;
   bool downloaded;
   String imageLocation;
-  List<String> categories;
+  List categories;
 
   Music(
       {required this.musicTitle,

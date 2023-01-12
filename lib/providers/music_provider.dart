@@ -68,16 +68,42 @@ class MusicProvider with ChangeNotifier {
         categories: ['All', 'Ambience']),
   ];
 
-  // 'All': [],
-  // 'Birds': [],
-  // 'Rain': [
-  // 'Sea': [],
-  // 'Fire': [],
-  // 'Forest': [],
-  // 'Train': []
-
   MusicProvider() {
     _loadMusic();
+  }
+
+  List<Music> findByCategory(String category) {
+    List<Music> MusicByCategory = [];
+    for (var element in _listOfMusic) {
+      if (element.categories.contains(category)) {
+        MusicByCategory.add(element);
+      }
+    }
+    return MusicByCategory;
+  }
+
+  Future<void> updateMusic(String url) async {
+    Music music =
+        _listOfMusic.firstWhere((element) => element.downloadUrl == url);
+    int index = _listOfMusic.indexWhere((element) => element == music);
+    _listOfMusic.removeAt(index);
+    _listOfMusic.insert(
+        index,
+        Music(
+            musicTitle: music.musicTitle,
+            downloadUrl: music.downloadUrl,
+            imageLocation: music.imageLocation,
+            categories: music.categories,
+            downloaded: true));
+    notifyListeners();
+    await _saveMusic();
+  }
+
+  Future _saveMusic() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+    _prefs.setStringList(
+        'musicList', _listOfMusic.map((p) => json.encode(p.toMap())).toList());
   }
 
   Future _loadMusic() async {

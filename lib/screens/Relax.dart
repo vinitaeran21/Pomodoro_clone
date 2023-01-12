@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:audioplayers/audioplayers.dart';
 import '../widgets/music_grid.dart';
 
 List<String> categoriesListText = [
@@ -9,7 +9,7 @@ List<String> categoriesListText = [
   'Sea',
   'Fire',
   'Forest',
-  'Train'
+  'Ambience'
 ];
 
 class RelaxScreen extends StatefulWidget {
@@ -21,6 +21,7 @@ class RelaxScreen extends StatefulWidget {
 
 class _RelaxScreenState extends State<RelaxScreen> {
   int currentCategory = 0;
+  AudioPlayer player = AudioPlayer();
 
   @override
   Widget build(BuildContext context) {
@@ -122,12 +123,14 @@ class _RelaxScreenState extends State<RelaxScreen> {
                 ),
               ),
               IconButton(
-                splashRadius: 1,
-                onPressed: () {},
-                icon: timerPaused
-                    ? const Icon(Icons.play_arrow_rounded, size: 32)
-                    : const Icon(Icons.pause, size: 32),
-              )
+                  splashRadius: 1,
+                  onPressed: () {},
+                  icon: Icon(Icons.pause, size: 32)
+
+                  // timerPaused
+                  //     ? const Icon(Icons.play_arrow_rounded, size: 32)
+                  //     : const Icon(Icons.pause, size: 32),
+                  )
             ],
           ),
         ),

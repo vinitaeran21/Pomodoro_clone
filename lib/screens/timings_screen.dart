@@ -2,6 +2,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:practice123455/providers/pomodoro_provider.dart';
 import 'package:practice123455/screens/countdown_screen.dart';
+import 'package:practice123455/screens/sounds_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class Timings extends StatefulWidget {
@@ -124,7 +125,16 @@ class _TimingsState extends State<Timings> {
               )
             ]),
         bottomNavigationBar: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            showModalBottomSheet(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(25.0),
+                  ),
+                ),
+                context: context,
+                builder: (context) => SoundsBottomSheet());
+          },
           child: SizedBox(
             height: 88,
             child: Column(
