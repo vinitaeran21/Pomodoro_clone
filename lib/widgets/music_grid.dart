@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:practice123455/modelss/music_model.dart';
 import 'package:practice123455/providers/music_provider.dart';
 import 'package:provider/provider.dart';
@@ -45,38 +46,42 @@ class MusicImage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Data = Provider.of<MusicProvider>(context);
-
-    return ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: GridTile(
-          header: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              if (!musicData.downloaded)
-                IconButton(
-                    onPressed: () async {
-                      bool result = await downloadFile(context);
-                      if (result == true) {
-                        await Data.updateMusic(musicData.downloadUrl);
-                      }
-                    },
-                    icon: Icon(
-                      Icons.download_for_offline_outlined,
-                      color: Colors.white,
-                    ))
-            ],
-          ),
-          footer: GridTileBar(
-            backgroundColor: Colors.black54,
-            title: Text(
-              musicData.musicTitle,
-              textAlign: TextAlign.center,
+    return GestureDetector(
+      onTap: () {
+        if (musicData.downloaded) Data.updateCurrentlyPlaying(musicData);
+      },
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: GridTile(
+            header: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                if (!musicData.downloaded)
+                  IconButton(
+                      onPressed: () async {
+                        bool result = await downloadFile(context);
+                        if (result == true) {
+                          await Data.updateMusic(musicData.downloadUrl);
+                        }
+                      },
+                      icon: Icon(
+                        Icons.download_for_offline_outlined,
+                        color: Colors.white,
+                      ))
+              ],
             ),
-          ),
-          child: Image.asset(
-            musicData.imageLocation,
-            fit: BoxFit.cover,
-          ),
-        ));
+            footer: GridTileBar(
+              backgroundColor: Colors.black54,
+              title: Text(
+                musicData.musicTitle,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            child: Image.asset(
+              musicData.imageLocation,
+              fit: BoxFit.cover,
+            ),
+          )),
+    );
   }
 }

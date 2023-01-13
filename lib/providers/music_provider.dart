@@ -67,9 +67,14 @@ class MusicProvider with ChangeNotifier {
         imageLocation: 'assets/good-mornings-at-ambient.jpg',
         categories: ['All', 'Ambience']),
   ];
+  Music? _currentMusic;
 
   MusicProvider() {
     _loadMusic();
+  }
+
+  Music? currentlyPlaying() {
+    return _currentMusic;
   }
 
   List<Music> findByCategory(String category) {
@@ -99,11 +104,23 @@ class MusicProvider with ChangeNotifier {
     await _saveMusic();
   }
 
+  Future updateCurrentlyPlaying(Music music) async {
+    _currentMusic = music;
+    notifyListeners();
+    await _saveCurrentMusic();
+  }
+
   Future _saveMusic() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
 
     _prefs.setStringList(
         'musicList', _listOfMusic.map((p) => json.encode(p.toMap())).toList());
+  }
+
+  Future _saveCurrentMusic() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+
+    _prefs.setString('currentMusic', json.encode(_currentMusic!.toMap()));
   }
 
   Future _loadMusic() async {
@@ -112,5 +129,10 @@ class MusicProvider with ChangeNotifier {
     if (result != null) {
       _listOfMusic = result.map((e) => Music.fromMap(jsonDecode(e))).toList();
     }
+    var result2 = _prefs.getString('currentMusic');
+    if (result2 != null) {
+      _currentMusic = Music.fromMap(jsonDecode(result2));
+    }
+    notifyListeners();
   }
 }

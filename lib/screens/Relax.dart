@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:practice123455/providers/music_provider.dart';
+import 'package:provider/provider.dart';
 import '../widgets/music_grid.dart';
 
 List<String> categoriesListText = [
@@ -22,9 +27,42 @@ class RelaxScreen extends StatefulWidget {
 class _RelaxScreenState extends State<RelaxScreen> {
   int currentCategory = 0;
   AudioPlayer player = AudioPlayer();
+  bool isPlaying = false;
+
+  void setAudio() async {
+    player.setReleaseMode(ReleaseMode.loop);
+    final dir = await getApplicationDocumentsDirectory();
+    String? title = Provider.of<MusicProvider>(context, listen: false)
+        .currentlyPlaying()
+        ?.musicTitle;
+    if (title != null) {
+      String path = '${dir.path}/$title';
+      player.setSourceDeviceFile(path);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    player.onPlayerStateChanged.listen((event) {
+      setState(() {
+        isPlaying = event == PlayerState.playing;
+      });
+    });
+    setAudio();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final Data = Provider.of<MusicProvider>(context);
+    final currentMusic = Data.currentlyPlaying();
+    setAudio();
     return SafeArea(
         child: Scaffold(
       appBar: AppBar(),
@@ -109,28 +147,30 @@ class _RelaxScreenState extends State<RelaxScreen> {
                     Icons.dehaze_outlined,
                     color: Colors.black,
                   ),
-                  label: const Text(
-                    'Mute',
+                  label: Text(
+                    currentMusic == null ? 'Mute' : currentMusic.musicTitle,
                     style: TextStyle(color: Colors.black),
                   )),
               const Spacer(),
               IconButton(
                 splashRadius: 1,
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.stop_rounded,
-                  size: 32,
-                ),
-              ),
-              IconButton(
-                  splashRadius: 1,
-                  onPressed: () {},
-                  icon: Icon(Icons.pause, size: 32)
-
-                  // timerPaused
-                  //     ? const Icon(Icons.play_arrow_rounded, size: 32)
-                  //     : const Icon(Icons.pause, size: 32),
-                  )
+                onPressed: () {
+                  if (isPlaying == true) {
+                    setState(() {
+                      isPlaying = !isPlaying;
+                      player.pause();
+                    });
+                  } else {
+                    setState(() {
+                      isPlaying = !isPlaying;
+                      player.resume();
+                    });
+                  }
+                },
+                icon: isPlaying
+                    ? const Icon(Icons.pause, size: 32)
+                    : const Icon(Icons.play_arrow_rounded, size: 32),
+              )
             ],
           ),
         ),
