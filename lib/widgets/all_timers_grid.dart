@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:practice123455/widgets/timercard.dart';
 import 'package:provider/provider.dart';
 
-import '../modelss/pomodoromodel.dart';
 import '../providers/pomodoro_provider.dart';
 
 class TimersGrid extends StatelessWidget {
@@ -15,8 +14,8 @@ class TimersGrid extends StatelessWidget {
     final timerData = Provider.of<PomodoroProvider>(context, listen: true);
     final timerList = timerData.timers;
     return GridView.builder(
-        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 32),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 32),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
           mainAxisSpacing: 16,
           crossAxisSpacing: 16,

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,7 +62,7 @@ class HistoryProvider with ChangeNotifier {
         }
         if (element.endDateTime
             .subtract(element.length)
-            .isAfter(DateTime.now().subtract(Duration(days: 7)))) {
+            .isAfter(DateTime.now().subtract(const Duration(days: 7)))) {
           weekSession += 1;
           weekTime += element.length.inMinutes;
         }
@@ -78,19 +77,20 @@ class HistoryProvider with ChangeNotifier {
     };
   }
 
-  void _saveHistory() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    _prefs.setStringList(
-        'history', _history.map((f) => jsonEncode(f.toMap())).toList());
-  }
+  //------------------SharedPreferences Functions Below------------------------
 
   void _loadHistory() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     var data = _prefs.getStringList('history');
     if (data != null) {
       _history = data.map((f) => History.fromMap(json.decode(f))).toList();
-      for (var element in _history) {}
       notifyListeners();
     }
+  }
+
+  void _saveHistory() async {
+    SharedPreferences _prefs = await SharedPreferences.getInstance();
+    _prefs.setStringList(
+        'history', _history.map((f) => jsonEncode(f.toMap())).toList());
   }
 }

@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:practice123455/providers/history_provider.dart';
@@ -10,15 +11,18 @@ class FocusTimer extends StatefulWidget {
   final CountDownController controller;
   final Function lapUpdate;
   final String timerTitle;
+  // final AudioPlayer player;
 
-  const FocusTimer(
-      {super.key,
-      required this.pageTitle,
-      required this.ringColor,
-      required this.timerLength,
-      required this.controller,
-      required this.lapUpdate,
-      required this.timerTitle});
+  const FocusTimer({
+    super.key,
+    required this.pageTitle,
+    required this.ringColor,
+    required this.timerLength,
+    required this.controller,
+    required this.lapUpdate,
+    required this.timerTitle,
+    // required this.player
+  });
 
   @override
   State<FocusTimer> createState() => _FocusTimerState();
@@ -105,7 +109,7 @@ class TimerTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 4),
       height: MediaQuery.of(context).size.width * 0.08,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),

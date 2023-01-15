@@ -23,14 +23,14 @@ class SummaryContainer extends StatelessWidget {
                 header: 'Today',
                 sessions: data['Today']![1],
                 time: data['Today']![0]),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             VerticalDivider(
               indent: constraints.maxHeight * 0.1,
               endIndent: constraints.maxHeight * 0.1,
             ),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             buildColumn(
@@ -38,14 +38,14 @@ class SummaryContainer extends StatelessWidget {
                 header: 'This Week',
                 sessions: data['Week']![1],
                 time: data['Week']![0]),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             VerticalDivider(
               indent: constraints.maxHeight * 0.1,
               endIndent: constraints.maxHeight * 0.1,
             ),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             buildColumn(
@@ -70,7 +70,7 @@ Column buildColumn(
     children: [
       Text(
         header,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 16,
           color: Colors.black,
           fontWeight: FontWeight.w500,
@@ -80,22 +80,23 @@ Column buildColumn(
         height: constraints.maxHeight * 0.08,
       ),
       Container(
-        padding: EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         width: 56,
         decoration: BoxDecoration(
-            color: Color(0xfff2f2f6), borderRadius: BorderRadius.circular(4)),
+            color: const Color(0xfff2f2f6),
+            borderRadius: BorderRadius.circular(4)),
         child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
               time,
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.red, fontWeight: FontWeight.w500, fontSize: 12),
             )),
       ),
       SizedBox(
         height: constraints.maxHeight * 0.04,
       ),
-      Text(
+      const Text(
         'Focused Time',
         style: TextStyle(color: Colors.grey, fontSize: 10),
       ),
@@ -103,22 +104,23 @@ Column buildColumn(
         height: constraints.maxHeight * 0.08,
       ),
       Container(
-        padding: EdgeInsets.symmetric(vertical: 4),
+        padding: const EdgeInsets.symmetric(vertical: 4),
         width: 64,
         decoration: BoxDecoration(
-            color: Color(0xfff2f2f6), borderRadius: BorderRadius.circular(4)),
+            color: const Color(0xfff2f2f6),
+            borderRadius: BorderRadius.circular(4)),
         child: FittedBox(
             fit: BoxFit.scaleDown,
             child: Text(
               '$sessions session',
-              style: TextStyle(
+              style: const TextStyle(
                   color: Colors.red, fontWeight: FontWeight.w500, fontSize: 12),
             )),
       ),
       SizedBox(
         height: constraints.maxHeight * 0.04,
       ),
-      Text(
+      const Text(
         'Completed',
         style: TextStyle(color: Colors.grey, fontSize: 10),
       ),

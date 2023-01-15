@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:practice123455/modelss/music_model.dart';
 import 'package:practice123455/providers/music_provider.dart';
 import 'package:provider/provider.dart';
@@ -17,8 +16,8 @@ class MusicImagesGrid extends StatelessWidget {
     final musicList = Data.findByCategory(categoryName);
     return GridView.builder(
         itemCount: musicList.length,
-        padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             childAspectRatio: 0.8,
             mainAxisSpacing: 8,
             crossAxisCount: 2,
@@ -39,7 +38,7 @@ class MusicImage extends StatelessWidget {
 
   Future<bool> downloadFile(BuildContext ctx) async {
     bool result = await FirebaseApi()
-        .downloadFile(musicData.downloadUrl, musicData.musicTitle, ctx) as bool;
+        .downloadFile(musicData.downloadUrl, musicData.musicTitle, ctx);
     return result;
   }
 
@@ -64,7 +63,7 @@ class MusicImage extends StatelessWidget {
                           await Data.updateMusic(musicData.downloadUrl);
                         }
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.download_for_offline_outlined,
                         color: Colors.white,
                       ))

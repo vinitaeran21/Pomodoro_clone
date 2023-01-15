@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:path_provider/path_provider.dart';
@@ -73,7 +71,7 @@ class _RelaxScreenState extends State<RelaxScreen> {
           Padding(
             padding: EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.04, bottom: 8),
-            child: Text(
+            child: const Text(
               'Relax',
               style: TextStyle(
                   fontSize: 32,
@@ -85,7 +83,7 @@ class _RelaxScreenState extends State<RelaxScreen> {
             color: Colors.white,
             height: 32,
             child: ListView.builder(
-                padding: EdgeInsets.symmetric(horizontal: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 4),
                 itemCount: categoriesListText.length,
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (BuildContext context, i) {
@@ -103,19 +101,19 @@ class _RelaxScreenState extends State<RelaxScreen> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: currentCategory == i
-                              ? Color(0xff535353)
-                              : Color(0xfff2f2f6)),
+                              ? const Color(0xff535353)
+                              : const Color(0xfff2f2f6)),
                       child: Center(
                         child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 8),
                             child: Text(
-                              '${categoriesListText[i]}',
+                              categoriesListText[i],
                               style: currentCategory == i
-                                  ? TextStyle(
+                                  ? const TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.w900,
                                     )
-                                  : TextStyle(
+                                  : const TextStyle(
                                       color: Color(0xff555555),
                                       fontWeight: FontWeight.w400),
                             )),
@@ -149,7 +147,7 @@ class _RelaxScreenState extends State<RelaxScreen> {
                   ),
                   label: Text(
                     currentMusic == null ? 'Mute' : currentMusic.musicTitle,
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                   )),
               const Spacer(),
               IconButton(

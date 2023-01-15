@@ -1,9 +1,13 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:practice123455/providers/pomodoro_provider.dart';
 import 'package:practice123455/screens/countdown_screen.dart';
 import 'package:practice123455/screens/sounds_bottom_sheet.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/music_provider.dart';
 
 class Timings extends StatefulWidget {
   const Timings({Key? key}) : super(key: key);
@@ -23,6 +27,19 @@ class _TimingsState extends State<Timings> {
   final CountDownController controller3 = CountDownController();
   late CountDownController currentController;
   int lapsCompleted = 0;
+  AudioPlayer player = AudioPlayer();
+
+  void setAudio() async {
+    player.setReleaseMode(ReleaseMode.loop);
+    final dir = await getApplicationDocumentsDirectory();
+    String? title = Provider.of<MusicProvider>(context, listen: false)
+        .currentlyPlaying()
+        ?.musicTitle;
+    if (title != null) {
+      String path = '${dir.path}/$title';
+      player.setSourceDeviceFile(path);
+    }
+  }
 
   void SwitchCountDownMode(CountDownController controller) {
     if (!controller.isStarted) {
@@ -38,6 +55,12 @@ class _TimingsState extends State<Timings> {
   void initState() {
     super.initState();
     currentController = controller1;
+    player.onPlayerStateChanged.listen((event) {
+      // setState(() {
+      //   isPlaying = event == PlayerState.playing;
+      // });
+    });
+    setAudio();
   }
 
   @override
@@ -51,6 +74,7 @@ class _TimingsState extends State<Timings> {
   Widget build(BuildContext context) {
     final timerId = ModalRoute.of(context)!.settings.arguments as String;
     final timerData = Provider.of<PomodoroProvider>(context).findById(timerId);
+    final currentMusic = Provider.of<MusicProvider>(context).currentlyPlaying();
 
     return SafeArea(
       child: Scaffold(
@@ -127,13 +151,14 @@ class _TimingsState extends State<Timings> {
         bottomNavigationBar: GestureDetector(
           onTap: () {
             showModalBottomSheet(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(25.0),
-                  ),
-                ),
-                context: context,
-                builder: (context) => SoundsBottomSheet());
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(25.0),
+                      ),
+                    ),
+                    context: context,
+                    builder: (context) => const SoundsBottomSheet())
+                .then((_) => setAudio());
           },
           child: SizedBox(
             height: 88,
@@ -161,9 +186,9 @@ class _TimingsState extends State<Timings> {
                             Icons.dehaze_outlined,
                             color: Colors.black,
                           ),
-                          label: const Text(
-                            'Mute',
-                            style: TextStyle(color: Colors.black),
+                          label: Text(
+                            currentMusic!.musicTitle,
+                            style: const TextStyle(color: Colors.black),
                           )),
                       const Spacer(),
                       IconButton(
@@ -173,6 +198,7 @@ class _TimingsState extends State<Timings> {
                             currentController.restart();
                             currentController.pause();
                           } else {
+                            player.pause();
                             currentController.pause();
                             setState(() {
                               timerPaused = true;
@@ -192,6 +218,11 @@ class _TimingsState extends State<Timings> {
                       IconButton(
                         splashRadius: 1,
                         onPressed: () {
+                          if (timerPaused) {
+                            player.resume();
+                          } else {
+                            player.pause();
+                          }
                           SwitchCountDownMode(currentController);
                           setState(() {
                             timerPaused = !timerPaused;
@@ -218,6 +249,7 @@ class _TimingsState extends State<Timings> {
       actions: [
         TextButton(
             onPressed: () {
+              player.resume();
               currentController.resume();
               Navigator.of(context).pop();
               setState(() {

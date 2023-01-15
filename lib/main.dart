@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:practice123455/providers/history_provider.dart';
 import 'package:practice123455/providers/music_provider.dart';
 import 'package:practice123455/providers/pomodoro_provider.dart';
 import 'package:practice123455/screens/History.dart';
-import 'package:practice123455/screens/all_timers_screen.dart';
 import 'package:practice123455/screens/home.dart';
 import 'package:practice123455/screens/timings_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const MyApp());
@@ -35,7 +37,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
               actionsIconTheme: IconThemeData(color: Colors.blue),
               elevation: 0,
               color: Colors.white,
@@ -48,7 +50,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
         ),
         routes: {
-          Timings.routename: (ctx) => Timings(),
+          Timings.routename: (ctx) => const Timings(),
           HistoryScreen.routeName: (ctx) => HistoryScreen()
         },
         home: Home(),

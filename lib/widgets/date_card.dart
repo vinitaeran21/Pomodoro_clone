@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:practice123455/providers/history_provider.dart';
-import 'package:practice123455/widgets/history_card.dart';
-import 'package:provider/provider.dart';
 
 class DateCard extends StatelessWidget {
   String date;
@@ -9,8 +6,6 @@ class DateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final historyData = Provider.of<HistoryProvider>(context);
-    final historyListByDate = historyData.GetByDate(date);
     return Padding(
       padding: EdgeInsets.only(
         top: 4,
@@ -18,7 +13,7 @@ class DateCard extends StatelessWidget {
       ),
       child: Text(
         date,
-        style: TextStyle(
+        style: const TextStyle(
             fontWeight: FontWeight.bold, fontSize: 16, color: Colors.red),
       ),
     );

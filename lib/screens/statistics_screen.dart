@@ -10,15 +10,15 @@ class Statistics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff2f2f6),
+      backgroundColor: const Color(0xfff2f2f6),
       appBar: AppBar(
-        backgroundColor: Color(0xfff2f2f6),
+        backgroundColor: const Color(0xfff2f2f6),
         actions: [
           IconButton(
               onPressed: () {
                 Navigator.of(context).pushNamed(HistoryScreen.routeName);
               },
-              icon: Icon(Icons.dehaze_outlined))
+              icon: const Icon(Icons.dehaze_outlined))
         ],
       ),
       body: Padding(
@@ -27,20 +27,20 @@ class Statistics extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Statistics',
               style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                   color: Colors.black),
             ),
-            SizedBox(
+            const SizedBox(
               height: 32,
             ),
             Padding(
               padding: EdgeInsets.symmetric(
                   horizontal: MediaQuery.of(context).size.width * 0.04),
-              child: Text(
+              child: const Text(
                 'SUMMARY',
                 style: TextStyle(
                     color: Colors.grey,
@@ -48,10 +48,10 @@ class Statistics extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 8,
             ),
-            SummaryContainer()
+            const SummaryContainer()
           ],
         ),
       ),

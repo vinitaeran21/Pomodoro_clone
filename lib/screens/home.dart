@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:practice123455/screens/History.dart';
 import 'package:practice123455/screens/Relax.dart';
 import 'package:practice123455/screens/all_timers_screen.dart';
 import 'package:practice123455/screens/statistics_screen.dart';
@@ -12,7 +11,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  PageController _pageController = PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 0);
 
   int currentPage = 0;
 
@@ -20,12 +19,16 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         controller: _pageController,
         // onPageChanged: (int val) {
         //   _pageController.jumpToPage(val);
         // },
-        children: [TimerScreen(), RelaxScreen(), Statistics()],
+        children: [
+          const TimerScreen(),
+          const RelaxScreen(),
+          const Statistics()
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.grey,
@@ -42,9 +45,11 @@ class _HomeState extends State<Home> {
         },
         currentIndex: currentPage,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.timer), label: 'Timers'),
-          BottomNavigationBarItem(icon: Icon(Icons.music_note), label: 'Relax'),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.timer), label: 'Timers'),
+          const BottomNavigationBarItem(
+              icon: Icon(Icons.music_note), label: 'Relax'),
+          const BottomNavigationBarItem(
               icon: Icon(Icons.auto_graph_sharp), label: 'Statistics'),
         ],
       ),

@@ -21,11 +21,11 @@ class HistoryCard extends StatelessWidget {
             children: [
               Text(
                 historyData.startDate,
-                style: TextStyle(fontSize: 8, color: Colors.grey),
+                style: const TextStyle(fontSize: 8, color: Colors.grey),
               )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 8,
           ),
           Row(
@@ -34,9 +34,9 @@ class HistoryCard extends StatelessWidget {
               ConstrainedBox(
                 constraints: BoxConstraints(
                     maxWidth: MediaQuery.of(context).size.width * 0.4),
-                child: Text('${historyData.title}',
+                child: Text(historyData.title,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 24,
                       color: Colors.black,
                       fontWeight: FontWeight.w400,
@@ -44,7 +44,7 @@ class HistoryCard extends StatelessWidget {
               ),
               Text(
                 '${DateFormat('jm').format(historyData.endDateTime.subtract(historyData.length))} - ${DateFormat('jm').format(historyData.endDateTime)}',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
@@ -54,14 +54,14 @@ class HistoryCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text('${historyData.type}',
-                  style: TextStyle(
+              Text(historyData.type,
+                  style: const TextStyle(
                       fontSize: 12,
                       color: Colors.grey,
                       fontWeight: FontWeight.bold))
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 12,
           ),
           Row(
@@ -71,7 +71,8 @@ class HistoryCard extends StatelessWidget {
                 historyData.length.inHours ~/ 60 != 0
                     ? '${historyData.length.inHours ~/ 60} hours ${historyData.length.inMinutes % 60} min'
                     : '${historyData.length.inMinutes % 60} min',
-                style: TextStyle(fontWeight: FontWeight.w400, fontSize: 24),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w400, fontSize: 24),
               )
             ],
           ),

@@ -1,37 +1,27 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:practice123455/modelss/pomodoromodel.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class PomodoroProvider with ChangeNotifier {
-  late List<Pomodoro> _timerList;
+  late List<Pomodoro> _timerList = [
+    Pomodoro(
+        id: const Uuid().v4(),
+        focus: 25,
+        shortbreak: 5,
+        longbreak: 15,
+        laps: 4,
+        title: 'Pomodoro',
+        icon: '🍅')
+  ];
 
   PomodoroProvider() {
-    _timerList = [
-      Pomodoro(
-          id: Uuid().v4(),
-          focus: 25,
-          shortbreak: 5,
-          longbreak: 15,
-          laps: 4,
-          title: 'Pomodoro',
-          icon: '🍅')
-    ];
     _loadTimers();
   }
 
+  // to get list of timers in the main page
   List<Pomodoro> get timers => [..._timerList];
-
-  _loadTimers() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
-    var result = _prefs.getStringList('Pomodoros');
-    if (result != null) {
-      _timerList = result.map((f) => Pomodoro.fromMap(json.decode(f))).toList();
-    }
-    notifyListeners();
-  }
 
   Pomodoro findById(String id) {
     return _timerList.any((element) => element.id == id)
@@ -46,9 +36,10 @@ class PomodoroProvider with ChangeNotifier {
             icon: '🍅');
   }
 
+  // adding a new pomodoro
   void addPomodoro() {
     _timerList.add(Pomodoro(
-        id: Uuid().v4(),
+        id: const Uuid().v4(),
         focus: 25,
         shortbreak: 5,
         longbreak: 15,
@@ -59,19 +50,32 @@ class PomodoroProvider with ChangeNotifier {
     _saveTimers();
   }
 
+  // Editing an existing pomodoro
   void EditingPomodoro(Pomodoro updatedPomodoro) async {
     int i =
         _timerList.indexWhere((element) => element.id == updatedPomodoro.id);
-    _timerList.removeAt(i);
-    _timerList.insert(i, updatedPomodoro);
+    _timerList[i] = updatedPomodoro;
     notifyListeners();
     _saveTimers();
   }
 
-  _saveTimers() async {
-    SharedPreferences _prefs = await SharedPreferences.getInstance();
+  // --------------------SharedPrefernces functions below-----------------------
 
-    _prefs.setStringList(
+  // update _timerList with already stored timers
+  _loadTimers() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var result = prefs.getStringList('Pomodoros');
+    if (result != null) {
+      _timerList = result.map((f) => Pomodoro.fromMap(json.decode(f))).toList();
+    }
+    notifyListeners();
+  }
+
+  // storing updates in _timerList
+  _saveTimers() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setStringList(
         'Pomodoros', _timerList.map((p) => json.encode(p.toMap())).toList());
   }
 }

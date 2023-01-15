@@ -23,7 +23,7 @@ List<String> emojis = [
 
 class AddPomodoroSheet extends StatelessWidget {
   Pomodoro editingPomodoro;
-  AddPomodoroSheet({required this.editingPomodoro});
+  AddPomodoroSheet({super.key, required this.editingPomodoro});
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +31,8 @@ class AddPomodoroSheet extends StatelessWidget {
         initialChildSize: 0.95,
         maxChildSize: 0.95,
         builder: (_, controller) => Container(
-              color: Color(0xfff2f2f6),
-              padding: EdgeInsets.symmetric(horizontal: 16),
+              color: const Color(0xfff2f2f6),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Scrollbar(
                 trackVisibility: true,
                 child: ListView(
@@ -41,7 +41,7 @@ class AddPomodoroSheet extends StatelessWidget {
                     EnterTitle(
                       editPomo: editingPomodoro,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 32,
                     ),
                     TimeSelector(
@@ -51,7 +51,7 @@ class AddPomodoroSheet extends StatelessWidget {
                       colour: Colors.red,
                       editPomo: editingPomodoro,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 32,
                     ),
                     TimeSelector(
@@ -61,7 +61,7 @@ class AddPomodoroSheet extends StatelessWidget {
                       colour: Colors.green,
                       editPomo: editingPomodoro,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 32,
                     ),
                     TimeSelector(
@@ -71,7 +71,7 @@ class AddPomodoroSheet extends StatelessWidget {
                       colour: Colors.blue,
                       editPomo: editingPomodoro,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 32,
                     ),
                     LapsCounter(
@@ -86,7 +86,7 @@ class AddPomodoroSheet extends StatelessWidget {
 
 class LapsCounter extends StatefulWidget {
   Pomodoro editPomo;
-  LapsCounter({required this.editPomo});
+  LapsCounter({super.key, required this.editPomo});
 
   @override
   State<LapsCounter> createState() => _LapsCounterState();
@@ -100,37 +100,36 @@ class _LapsCounterState extends State<LapsCounter> {
     return Container(
       color: Colors.white,
       child: ListTile(
-          contentPadding: EdgeInsets.only(left: 16),
+          contentPadding: const EdgeInsets.only(left: 16),
           leading: Text(
             'Long break after ${widget.editPomo.laps} laps',
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          trailing: Container(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                IconButton(
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              IconButton(
+                onPressed: () {
+                  if (widget.editPomo.laps > 0) {
+                    setState(() {
+                      --widget.editPomo.laps;
+                    });
+                  }
+                  PomodoroData.EditingPomodoro(widget.editPomo);
+                },
+                icon: const Icon(Icons.remove),
+                visualDensity: VisualDensity.compact,
+              ),
+              IconButton(
                   onPressed: () {
-                    if (widget.editPomo.laps > 0)
-                      setState(() {
-                        --widget.editPomo.laps;
-                      });
+                    setState(() {
+                      ++widget.editPomo.laps;
+                    });
                     PomodoroData.EditingPomodoro(widget.editPomo);
                   },
-                  icon: Icon(Icons.remove),
-                  visualDensity: VisualDensity.compact,
-                ),
-                IconButton(
-                    onPressed: () {
-                      setState(() {
-                        ++widget.editPomo.laps;
-                      });
-                      PomodoroData.EditingPomodoro(widget.editPomo);
-                    },
-                    icon: Icon(Icons.add),
-                    visualDensity: VisualDensity.compact)
-              ],
-            ),
+                  icon: const Icon(Icons.add),
+                  visualDensity: VisualDensity.compact)
+            ],
           )),
     );
   }
@@ -144,7 +143,8 @@ class TimeSelector extends StatefulWidget {
   int mm;
 
   TimeSelector(
-      {required this.type,
+      {super.key,
+      required this.type,
       required this.colour,
       required this.editPomo,
       required this.hh,
@@ -207,7 +207,7 @@ class _TimeSelectorState extends State<TimeSelector> {
 
 class EnterTitle extends StatefulWidget {
   Pomodoro editPomo;
-  EnterTitle({required this.editPomo});
+  EnterTitle({super.key, required this.editPomo});
   @override
   State<EnterTitle> createState() => _EnterTitleState();
 }
@@ -229,7 +229,7 @@ class _EnterTitleState extends State<EnterTitle> {
 
     return Column(children: [
       TextFormField(
-        style: TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(fontWeight: FontWeight.bold),
         onChanged: (val) {
           widget.editPomo.title = val;
           PomodoroData.EditingPomodoro(widget.editPomo);
@@ -237,13 +237,14 @@ class _EnterTitleState extends State<EnterTitle> {
         controller: title,
         textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
-          suffixIconConstraints: BoxConstraints(maxWidth: 54, maxHeight: 48),
+          suffixIconConstraints:
+              const BoxConstraints(maxWidth: 54, maxHeight: 48),
           suffixIcon: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: Color(0xfff2f2f6),
+              color: const Color(0xfff2f2f6),
             ),
-            margin: EdgeInsets.only(right: 16, top: 4, bottom: 4),
+            margin: const EdgeInsets.only(right: 16, top: 4, bottom: 4),
             padding: EdgeInsets.zero,
             child: TextButton(
                 onPressed: () {
@@ -253,23 +254,23 @@ class _EnterTitleState extends State<EnterTitle> {
                 },
                 child: Text(
                   widget.editPomo.icon,
-                  style: TextStyle(fontSize: 20),
+                  style: const TextStyle(fontSize: 20),
                 )),
           ),
           enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.white),
+            borderSide: const BorderSide(color: Colors.white),
             borderRadius: showEmojis
-                ? BorderRadius.only(
+                ? const BorderRadius.only(
                     topLeft: Radius.circular(16), topRight: Radius.circular(16))
                 : BorderRadius.circular(16),
           ),
-          border: UnderlineInputBorder(
+          border: const UnderlineInputBorder(
             borderSide: BorderSide.none,
           ),
           filled: true,
           fillColor: Colors.white,
           hintText: 'Timer title',
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
               color: Colors.grey, fontWeight: FontWeight.w500, fontSize: 16),
         ),
       ),
@@ -279,17 +280,15 @@ class _EnterTitleState extends State<EnterTitle> {
           height: 50,
           child: ListView.builder(
             itemCount: emojis.length,
-            itemBuilder: (context, i) => Container(
-              child: TextButton(
-                onPressed: () {
-                  widget.editPomo.icon = emojis[i];
-                  setState(() {
-                    showEmojis = !showEmojis;
-                  });
-                  PomodoroData.EditingPomodoro(widget.editPomo);
-                },
-                child: Text(emojis[i], style: TextStyle(fontSize: 24)),
-              ),
+            itemBuilder: (context, i) => TextButton(
+              onPressed: () {
+                widget.editPomo.icon = emojis[i];
+                setState(() {
+                  showEmojis = !showEmojis;
+                });
+                PomodoroData.EditingPomodoro(widget.editPomo);
+              },
+              child: Text(emojis[i], style: const TextStyle(fontSize: 24)),
             ),
             scrollDirection: Axis.horizontal,
           ),

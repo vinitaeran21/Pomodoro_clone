@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:practice123455/providers/history_provider.dart';
 import 'package:practice123455/widgets/history_card.dart';
 import 'package:provider/provider.dart';
@@ -13,25 +12,26 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Data = Provider.of<HistoryProvider>(context);
-    final historyData = Data.HistoryList;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           leadingWidth: double.infinity,
           leading: TextButton.icon(
-            icon: Icon(Icons.arrow_back_outlined),
-            label: Text('Statistics'),
+            icon: const Icon(Icons.arrow_back_outlined),
+            label: const Text('Statistics'),
             onPressed: () => Navigator.of(context).pop(),
           ),
-          backgroundColor: Color(0xfff2f2f6),
-          actions: [IconButton(onPressed: () {}, icon: Icon(Icons.delete))],
+          backgroundColor: const Color(0xfff2f2f6),
+          actions: [
+            IconButton(onPressed: () {}, icon: const Icon(Icons.delete))
+          ],
         ),
-        backgroundColor: Color(0xfff2f2f6),
+        backgroundColor: const Color(0xfff2f2f6),
         body: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Padding(
             padding: EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.05, bottom: 8),
-            child: Text(
+            child: const Text(
               'History',
               style: TextStyle(
                   fontSize: 32,
