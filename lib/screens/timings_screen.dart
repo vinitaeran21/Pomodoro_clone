@@ -7,6 +7,7 @@ import 'package:practice123455/screens/countdown_screen.dart';
 import 'package:practice123455/screens/sounds_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
+import '../modelss/music_model.dart';
 import '../providers/music_provider.dart';
 
 class Timings extends StatefulWidget {
@@ -74,7 +75,8 @@ class _TimingsState extends State<Timings> {
   Widget build(BuildContext context) {
     final timerId = ModalRoute.of(context)!.settings.arguments as String;
     final timerData = Provider.of<PomodoroProvider>(context).findById(timerId);
-    final currentMusic = Provider.of<MusicProvider>(context).currentlyPlaying();
+    final Music? currentMusic =
+        Provider.of<MusicProvider>(context).currentlyPlaying();
 
     return SafeArea(
       child: Scaffold(
@@ -99,6 +101,9 @@ class _TimingsState extends State<Timings> {
                 pageTitle: 'Focus',
                 timerLength: timerData.focus,
                 controller: controller1,
+                pauseAudio: () {
+                  player.pause();
+                },
                 lapUpdate: () {
                   setState(() {
                     lapsCompleted += 1;
@@ -121,6 +126,9 @@ class _TimingsState extends State<Timings> {
                 pageTitle: 'Short Break',
                 timerLength: timerData.shortbreak,
                 controller: controller2,
+                pauseAudio: () {
+                  player.pause();
+                },
                 lapUpdate: () {
                   setState(() {
                     timerPaused = !timerPaused;
@@ -136,6 +144,9 @@ class _TimingsState extends State<Timings> {
                 pageTitle: 'Long Break',
                 timerLength: timerData.longbreak,
                 controller: controller3,
+                pauseAudio: () {
+                  player.pause();
+                },
                 lapUpdate: () {
                   setState(() {
                     timerPaused = !timerPaused;
@@ -180,16 +191,19 @@ class _TimingsState extends State<Timings> {
                       const SizedBox(
                         width: 12,
                       ),
-                      TextButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(
-                            Icons.dehaze_outlined,
+                      Icon(Icons.dehaze_outlined),
+                      SizedBox(
+                        width: 8,
+                      ),
+                      Text(
+                        currentMusic != null
+                            ? currentMusic!.musicTitle
+                            : 'Mute',
+                        style: const TextStyle(
                             color: Colors.black,
-                          ),
-                          label: Text(
-                            currentMusic!.musicTitle,
-                            style: const TextStyle(color: Colors.black),
-                          )),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
                       const Spacer(),
                       IconButton(
                         splashRadius: 1,

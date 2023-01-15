@@ -11,18 +11,17 @@ class FocusTimer extends StatefulWidget {
   final CountDownController controller;
   final Function lapUpdate;
   final String timerTitle;
-  // final AudioPlayer player;
+  final Function pauseAudio;
 
-  const FocusTimer({
-    super.key,
-    required this.pageTitle,
-    required this.ringColor,
-    required this.timerLength,
-    required this.controller,
-    required this.lapUpdate,
-    required this.timerTitle,
-    // required this.player
-  });
+  const FocusTimer(
+      {super.key,
+      required this.pageTitle,
+      required this.ringColor,
+      required this.timerLength,
+      required this.controller,
+      required this.lapUpdate,
+      required this.timerTitle,
+      required this.pauseAudio});
 
   @override
   State<FocusTimer> createState() => _FocusTimerState();
@@ -59,6 +58,7 @@ class _FocusTimerState extends State<FocusTimer>
           alignment: const Alignment(0, -0.3),
           child: CircularCountDownTimer(
             onComplete: () {
+              widget.pauseAudio();
               historyData.addHistory(widget.timerTitle, DateTime.now(),
                   Duration(minutes: widget.timerLength), widget.pageTitle);
               widget.controller.reset();
